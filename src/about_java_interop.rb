@@ -23,8 +23,8 @@ class AboutJavaInterop < Neo::Koan
 
   def test_include_class_includes_class_in_module_scope
     assert_nil defined?(TreeSet) # __
-    include_class "java.util.TreeSet"
-    assert_equal __("constant"), defined?(TreeSet)
+    include_class 'java.util.TreeSet'
+    assert_equal __('constant'), defined?(TreeSet)
   end
 
   # THINK ABOUT IT:
@@ -39,37 +39,37 @@ class AboutJavaInterop < Neo::Koan
 
   JString = java.lang.String
   def test_also_java_class_can_be_given_ruby_aliases
-    java_string = JString.new("A Java String")
+    java_string = JString.new('A Java String')
     assert_equal __(java.lang.String), java_string.class
     assert_equal __(java.lang.String), JString
   end
 
   def test_can_directly_call_java_methods_on_java_objects
-    java_string = JString.new("A Java String")
-    assert_equal __("a java string"), java_string.toLowerCase
+    java_string = JString.new('A Java String')
+    assert_equal __('a java string'), java_string.toLowerCase
   end
 
   def test_jruby_provides_snake_case_versions_of_java_methods
-    java_string = JString.new("A Java String")
-    assert_equal __("a java string"), java_string.to_lower_case
+    java_string = JString.new('A Java String')
+    assert_equal __('a java string'), java_string.to_lower_case
   end
 
   def test_jruby_provides_question_mark_versions_of_boolean_methods
-    java_string = JString.new("A Java String")
-    assert_equal __(true), java_string.endsWith("String")
-    assert_equal __(true), java_string.ends_with("String")
-    assert_equal __(true), java_string.ends_with?("String")
+    java_string = JString.new('A Java String')
+    assert_equal __(true), java_string.endsWith('String')
+    assert_equal __(true), java_string.ends_with('String')
+    assert_equal __(true), java_string.ends_with?('String')
   end
 
   def test_java_string_are_not_ruby_strings
-    ruby_string = "A Java String"
+    ruby_string = 'A Java String'
     java_string = java.lang.String.new(ruby_string)
     assert_equal __(true), java_string.is_a?(java.lang.String)
     assert_equal __(false), java_string.is_a?(String)
   end
 
   def test_java_strings_can_be_compared_to_ruby_strings_maybe
-    ruby_string = "A Java String"
+    ruby_string = 'A Java String'
     java_string = java.lang.String.new(ruby_string)
     assert_equal __(false), ruby_string == java_string
     assert_equal __(true), java_string == ruby_string
@@ -90,13 +90,13 @@ class AboutJavaInterop < Neo::Koan
 
   def test_however_most_methods_returning_strings_return_ruby_strings
     java_array = java.util.ArrayList.new
-    assert_equal __("[]"), java_array.toString
+    assert_equal __('[]'), java_array.toString
     assert_equal __(true), java_array.toString.is_a?(String)
     assert_equal __(false), java_array.toString.is_a?(java.lang.String)
   end
 
   def test_some_ruby_objects_can_be_coerced_to_java
-    assert_equal __(Java::JavaLang::String), "ruby string".to_java.class
+    assert_equal __(Java::JavaLang::String), 'ruby string'.to_java.class
     assert_equal __(Java::JavaLang::Long), 1.to_java.class
     assert_equal __(Java::JavaLang::Double), 9.32.to_java.class
     assert_equal __(Java::JavaLang::Boolean), false.to_java.class
@@ -110,8 +110,8 @@ class AboutJavaInterop < Neo::Koan
 
   def test_java_collections_are_enumerable
     java_array = java.util.ArrayList.new
-    java_array << "one" << "two" << "three"
-    assert_equal __(["ONE", "TWO", "THREE"]), java_array.map { |item| item.upcase }
+    java_array << 'one' << 'two' << 'three'
+    assert_equal __(%w[ONE TWO THREE]), java_array.map(&:upcase)
   end
 
   # ------------------------------------------------------------------
@@ -129,9 +129,8 @@ class AboutJavaInterop < Neo::Koan
 
   def test_java_class_are_open_from_ruby
     java_array = java.util.ArrayList.new
-    java_array.add_all([1,2,3,4,5])
+    java_array.add_all([1, 2, 3, 4, 5])
 
     assert_equal __(120), java_array.multiply_all
   end
-
 end
